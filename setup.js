@@ -3,8 +3,12 @@ const { exec } = require('child_process')
 
 function cleanRepo() {
   console.log('正在重置git版本库')
-  shell.rm('-rf', './git/')
+  shell.rm('-rf', '.git/')
   checkNodeVersion()
+}
+
+function initGit() {
+  shell.exec('git init && git add . && git commit -m "Initial commit"')
 }
 
 function checkNodeVersion() {
@@ -21,8 +25,9 @@ function checkNodeVersion() {
           if (code !== 0) {
             console.error('初始化失败')
           } else {
-            console.error('初始化成功')
             shell.rm('./setup.js')
+            initGit()
+            console.error('初始化成功')
           }
         })
       }
