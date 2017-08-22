@@ -17,32 +17,17 @@ function checkNodeVersion() {
       if (nodeVersion < 5) {
         console.error('Node 版本过低(' + nodeVersion + ')')
       } else {
-        initialNpm()
+        checkYarn((code, stderr, stdout) => {
+          if (code !== 0) {
+            console.error('初始化失败')
+          } else {
+            console.error('初始化成功')
+            shell.rm('./setup.js')
+          }
+        })
       }
     }
   })
-}
-
-function initialNpm() {
-  const child = exec('npm init', (err, stdout, stdin) => {
-    if (err) {
-      console.error('npm 初始化失败')
-      process.exit(1)
-      return
-    } else {
-      checkYarn((code, stderr, stdout) => {
-        if (code !== 0) {
-          console.error('初始化失败')
-        } else {
-          console.error('初始化成功')
-          shell.rm('./setup.js')
-        }
-      })
-    }
-  })
-  process.stdin.pipe(child.stdin)
-  child.stdout.pipe(process.stdout)
-  child.stderr.pipe(process.stderr)
 }
 
 function checkYarn(cb) {
