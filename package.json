@@ -9,9 +9,10 @@
   "author": "ivan",
   "license": "MIT",
   "scripts": {
-    "build": "tsc && npm run cp-declarations && rollup --config rollup.config.js && npm run build:doc",
+    "build": "npm run build:ts && npm run build:copy && rollup --config rollup.config.js && npm run build:doc",
     "build:doc": "rimraf doc/api && typedoc --out ./doc/api --readme ./README.md ./src",
-    "cp-declarations": "cpr lib dist --delete-first --filter \"\\.js\" # copy Typescript declarations to dist",
+    "build:ts": "rimraf lib && tsc",
+    "build:copy": "cpr lib dist --delete-first --filter \"\\.js\" # copy Typescript declarations to dist",
     "watch": "tsc --watch",
     "clean": "rimraf lib dist doc/api",
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -22,15 +23,9 @@
     "setup": "node setup.js"
   },
   "lint-staged": {
-    "*.ts?(x)": [
-      "npm run prettier",
-      "npm run lint",
-      "git add"
-    ]
+    "*.ts?(x)": ["npm run prettier", "npm run lint", "git add"]
   },
-  "keywords": [
-    "typescript"
-  ],
+  "keywords": ["typescript"],
   "devDependencies": {
     "cpr": "^2.2.0",
     "husky": "^0.14.3",
@@ -43,11 +38,15 @@
     "rollup-plugin-filesize": "^1.4.2",
     "rollup-plugin-node-resolve": "^3.0.0",
     "rollup-plugin-progress": "^0.4.0",
+    "rollup-plugin-replace": "^1.1.1",
     "rollup-plugin-uglify": "^2.0.1",
     "tslint": "^5.6.0",
     "tslint-eslint-rules": "^4.1.1",
     "tslint-react": "^3.2.0",
     "typedoc": "^0.8.0",
     "typescript": "^2.4.2"
+  },
+  "dependencies": {
+    "@types/node": "^8.0.25"
   }
 }
