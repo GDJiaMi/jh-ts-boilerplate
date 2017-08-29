@@ -28,6 +28,8 @@ export default [
   // commonJS for development
   {
     input: './lib/index.js',
+    // not inject tslib, let Webpack or other Bundler to handle it.
+    external: ['tslib'],
     output: {
       file: './dist/index.js',
       format: 'cjs',
@@ -47,6 +49,7 @@ export default [
   // ES6 for development
   {
     input: './lib/index.js',
+    external: ['tslib'],
     output: {
       file: './dist/index.module.js',
       format: 'es',
